@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
+  const API = import.meta.env.VITE_API_URL;
   const [balance, setBalance] = useState(0);
   const [amount, setAmount] = useState("");
   const [withdrawAmount, setWithdrawAmount] =
@@ -26,38 +27,34 @@ const logoutHandler = () => {
   }, []);
 
   const fetchBalance = async () => {
-    try {
-      const token =
-        localStorage.getItem("token");
+  try {
+    const token = localStorage.getItem("token");
 
-      const response = await axios.get(
-        "http://localhost:8000/api/bank/balance",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+    const response = await axios.get(
+      `${API}/bank/balance`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-      setBalance(response.data.balance);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    setBalance(response.data.balance);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   const fetchTransactions = async () => {
     try {
-      const token =
-        localStorage.getItem("token");
-
       const response = await axios.get(
-        "http://localhost:8000/api/bank/transactions",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  `${API}/bank/transactions`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
       setTransactions(
         response.data.transactions
@@ -73,16 +70,16 @@ const logoutHandler = () => {
         localStorage.getItem("token");
 
       const response = await axios.post(
-        "http://localhost:8000/api/bank/deposit",
-        {
-          amount: Number(amount),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  `${API}/bank/deposit`,
+  {
+    amount: Number(amount),
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
       alert("Deposit Successful");
 
@@ -99,22 +96,17 @@ const logoutHandler = () => {
 
   const withdrawHandler = async () => {
     try {
-      const token =
-        localStorage.getItem("token");
-
       const response = await axios.post(
-        "http://localhost:8000/api/bank/withdraw",
-        {
-          amount: Number(
-            withdrawAmount
-          ),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  `${API}/bank/withdraw`,
+  {
+    amount: Number(withdrawAmount),
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
       alert("Withdraw Successful");
 
@@ -135,19 +127,17 @@ const logoutHandler = () => {
         localStorage.getItem("token");
 
       const response = await axios.post(
-        "http://localhost:8000/api/bank/transfer",
-        {
-          receiverEmail,
-          amount: Number(
-            transferAmount
-          ),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  `${API}/bank/transfer`,
+  {
+    receiverEmail,
+    amount: Number(transferAmount),
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
       alert("Transfer Successful");
 
