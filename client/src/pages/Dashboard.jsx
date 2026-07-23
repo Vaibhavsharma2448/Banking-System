@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
@@ -30,7 +30,7 @@ const logoutHandler = () => {
   try {
     const token = localStorage.getItem("token");
 
-    const response = await axios.get(
+    const response = await api.get(
       `${API}/bank/balance`,
       {
         headers: {
@@ -47,7 +47,7 @@ const logoutHandler = () => {
 
   const fetchTransactions = async () => {
     try {
-      const response = await axios.get(
+      const response = await api.get(
   `${API}/bank/transactions`,
   {
     headers: {
@@ -69,7 +69,7 @@ const logoutHandler = () => {
       const token =
         localStorage.getItem("token");
 
-      const response = await axios.post(
+      const response = await api.post(
   `${API}/bank/deposit`,
   {
     amount: Number(amount),
@@ -96,7 +96,8 @@ const logoutHandler = () => {
 
   const withdrawHandler = async () => {
     try {
-      const response = await axios.post(
+      const response = await api.post(
+  "/bank/withdraw",
   `${API}/bank/withdraw`,
   {
     amount: Number(withdrawAmount),
@@ -126,7 +127,8 @@ const logoutHandler = () => {
       const token =
         localStorage.getItem("token");
 
-      const response = await axios.post(
+      const response = await api.post(
+
   `${API}/bank/transfer`,
   {
     receiverEmail,
