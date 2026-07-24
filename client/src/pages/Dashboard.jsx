@@ -3,7 +3,6 @@ import { api } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
-  const API = import.meta.env.VITE_API_URL;
   const [balance, setBalance] = useState(0);
   const [amount, setAmount] = useState("");
   const [withdrawAmount, setWithdrawAmount] =
@@ -28,18 +27,15 @@ const logoutHandler = () => {
 
   const fetchBalance = async () => {
   try {
-    const token = localStorage.getItem("token");
+const token = localStorage.getItem("token");
 
-    const response = await api.get(
-      `${API}/bank/balance`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+const response = await api.get("/bank/balance", {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
 
-    setBalance(response.data.balance);
+setBalance(response.data.balance);
   } catch (error) {
     console.log(error);
   }
@@ -47,14 +43,13 @@ const logoutHandler = () => {
 
   const fetchTransactions = async () => {
     try {
-      const response = await api.get(
-  `${API}/bank/transactions`,
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
+      const token = localStorage.getItem("token");
+
+const response = await api.get("/bank/transactions", {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
 
       setTransactions(
         response.data.transactions
@@ -70,7 +65,7 @@ const logoutHandler = () => {
         localStorage.getItem("token");
 
       const response = await api.post(
-  `${API}/bank/deposit`,
+  "/bank/deposit",
   {
     amount: Number(amount),
   },
@@ -96,18 +91,34 @@ const logoutHandler = () => {
 
   const withdrawHandler = async () => {
     try {
-      const response = await api.post(
-  "/bank/withdraw",
-  `${API}/bank/withdraw`,
-  {
-    amount: Number(withdrawAmount),
-  },
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+      const withdrawHandler = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await api.post(
+      "/bank/withdraw",
+      {
+        amount: Number(withdrawAmount),
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    alert("Withdraw Successful");
+
+    setBalance(response.data.balance);
+    setWithdrawAmount("");
+    fetchTransactions();
+  } catch (error) {
+    alert(
+      error.response?.data?.message ||
+      "Withdraw Failed"
+    );
   }
-);
+};
 
       alert("Withdraw Successful");
 
@@ -128,8 +139,7 @@ const logoutHandler = () => {
         localStorage.getItem("token");
 
       const response = await api.post(
-
-  `${API}/bank/transfer`,
+  "/bank/transfer",
   {
     receiverEmail,
     amount: Number(transferAmount),
