@@ -19,21 +19,18 @@ const userSchema = new mongoose.Schema(
     },
 
     accountNumber: {
-      type: Number,
+      type: String,
+      unique: true,
       default: () =>
         Math.floor(
           1000000000 + Math.random() * 9000000000
-        ),
+        ).toString(),
     },
 
     balance: {
       type: Number,
       default: 0,
     },
-    accountNumber: {
-  type: String,
-  unique: true,
-},
   },
   {
     timestamps: true,

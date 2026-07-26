@@ -150,3 +150,43 @@ exports.getTransactions = async (req, res) => {
     });
   }
 };
+exports.getSummary = async (req, res) => {
+  try {
+    // User find karo
+    const user = await User.findById(req.user.id);
+
+    // User ki saari transactions lao
+    const transactions = await Transaction.find({
+      user: req.user.id,
+    });
+
+    let totalIncome = 0;
+    let totalExpense = 0;
+
+    // Income aur Expense calculate karo
+    transactions.forEach((item) => {
+      if (item.type === "deposit") {
+        totalIncome += item.amount;
+      }
+
+      if (item.type === "withdraw") {
+        totalExpense += item.amount;
+      }
+    });
+
+    // Response bhejo
+    res.status(200).json({
+      success: true,
+      balance: user.balance,
+      income: totalIncome,
+      expense: totalExpense,
+      transactions: transactions.length,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
