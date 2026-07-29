@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import toast from "react-hot-toast";
 
 import { api } from "../services/api";
 import Analytics from "../components/Analytics";
@@ -118,7 +119,7 @@ const depositHandler = async () => {
       }
     );
 
-    alert("Deposit Successful");
+    toast.success("Deposit Successful");
 
     setBalance(res.data.balance);
 
@@ -126,7 +127,7 @@ const depositHandler = async () => {
 
     fetchTransactions();
   } catch (error) {
-    alert(
+    toast.error(
       error.response?.data?.message ||
         "Deposit Failed"
     );
@@ -149,14 +150,14 @@ const withdrawHandler = async () => {
       }
     );
 
-    alert("Withdraw Successful");
+    toast.success("Withdraw Successful");
 
     setBalance(res.data.balance);
     setWithdrawAmount("");
 
     fetchTransactions();
   } catch (error) {
-    alert(
+    toast.error(
       error.response?.data?.message ||
       "Withdraw Failed"
     );
@@ -180,7 +181,7 @@ const transferHandler = async () => {
       }
     );
 
-    alert("Transfer Successful");
+   toast.success("Transfer Successful");
 
     setBalance(res.data.senderBalance);
 
@@ -189,7 +190,7 @@ const transferHandler = async () => {
 
     fetchTransactions();
   } catch (error) {
-    alert(
+    toast.error(
       error.response?.data?.message ||
       "Transfer Failed"
     );

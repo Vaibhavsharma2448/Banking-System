@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { api } from "../services/api";
+import toast from "react-hot-toast";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -19,13 +20,13 @@ function Register() {
   }
 );
 
-      alert(response.data.message);
+     toast.success(response.data.message);
 
       setName("");
       setEmail("");
       setPassword("");
     } catch (error) {
-      alert(
+      toast.error( 
         error.response?.data?.message ||
           "Registration Failed"
       );
