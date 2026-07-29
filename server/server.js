@@ -1,36 +1,55 @@
 const express = require("express");
-const dotenv = require("dotenv");
 const cors = require("cors");
+require("dotenv").config();
 
 const connectDB = require("./config/database");
 const authRoutes = require("./routes/authRoutes");
 const bankRoutes = require("./routes/bankRoutes");
 
-dotenv.config();
-
 const app = express();
 
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://banking-system-seven-nu.vercel.app",
-  ],
-  credentials: true,
-}));
+// =========================
+// CORS
+// =========================
+app.use(
+  cors({
+    origin: [
+      "https://banking-system-9gcrhyv13-csevaibhav2000-7545s-projects.vercel.app",
+      "http://localhost:5173",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
+// =========================
+// Middleware
+// =========================
 app.use(express.json());
 
-connectDB();
-
+// =========================
+// Routes
+// =========================
 app.use("/api/auth", authRoutes);
 app.use("/api/bank", bankRoutes);
 
+// =========================
+// Test Route
+// =========================
 app.get("/", (req, res) => {
   res.send("Banking Backend Running");
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(
-    `Server Started on Port ${process.env.PORT}`
-  );
+// =========================
+// Database
+// =========================
+connectDB();
+
+// =========================
+// Server
+// =========================
+const PORT = process.env.PORT || 8000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
