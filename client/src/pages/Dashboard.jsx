@@ -232,247 +232,358 @@ const downloadPDF = () => {
   doc.save("Bank-Statement.pdf");
 };
 
-return (
-  <div className="min-h-screen bg-gray-100 p-8">
-
+return(
+  <div className="min-h-screen bg-slate-50 px-4 py-6 md:px-8">
     <div className="max-w-6xl mx-auto">
 
-      <div className="flex justify-between items-center mb-8">
-
+      {/* Header */}
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-8">
         <div>
+          <p className="text-sm font-semibold text-blue-600">
+            Secure Banking
+          </p>
 
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-3xl md:text-4xl font-bold text-slate-900">
             Banking Dashboard
           </h1>
 
-          <p className="text-gray-500">
-            Welcome Back 👋
+          <p className="text-slate-500 mt-1">
+            Welcome back 👋
           </p>
-
         </div>
 
-        <div className="flex gap-3">
-
+        <div className="flex flex-col sm:flex-row gap-3">
           <button
-            onClick={() =>
-              navigate("/profile")
-            }
-            className="bg-blue-600 text-white px-5 py-2 rounded-lg"
+            onClick={() => navigate("/profile")}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium transition"
           >
             My Profile
           </button>
 
           <button
             onClick={logoutHandler}
-            className="bg-black text-white px-5 py-2 rounded-lg"
+            className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-medium transition"
           >
             Logout
           </button>
+        </div>
+      </div>
 
+      {/* Balance Card */}
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-3xl shadow-xl p-6 md:p-8 mb-8">
+        <p className="text-blue-100 text-sm font-medium">
+          Current Balance
+        </p>
+
+        <h2 className="text-4xl md:text-5xl font-bold mt-2">
+          ₹{balance}
+        </h2>
+
+        <div className="flex items-center gap-2 mt-4 text-sm text-blue-100">
+          <span className="w-2.5 h-2.5 bg-green-400 rounded-full"></span>
+          Available Balance
+        </div>
+      </div>
+
+      {/* Banking Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
+        {/* Deposit */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition">
+          <div className="mb-5">
+            <h2 className="text-xl font-bold text-slate-900">
+              Deposit
+            </h2>
+
+            <p className="text-sm text-slate-500 mt-1">
+              Add money to your account
+            </p>
+          </div>
+
+          <input
+            type="number"
+            placeholder="Enter Amount"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            className="border border-slate-300 w-full p-3 rounded-xl mb-4 outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent"
+          />
+
+          <button
+            onClick={depositHandler}
+            className="bg-green-500 hover:bg-green-600 w-full text-white p-3 rounded-xl font-medium transition"
+          >
+            Deposit Money
+          </button>
         </div>
 
+        {/* Withdraw */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition">
+          <div className="mb-5">
+            <h2 className="text-xl font-bold text-slate-900">
+              Withdraw
+            </h2>
+
+            <p className="text-sm text-slate-500 mt-1">
+              Withdraw money from your account
+            </p>
+          </div>
+
+          <input
+            type="number"
+            placeholder="Enter Amount"
+            value={withdrawAmount}
+            onChange={(e) =>
+              setWithdrawAmount(e.target.value)
+            }
+            className="border border-slate-300 w-full p-3 rounded-xl mb-4 outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent"
+          />
+
+          <button
+            onClick={withdrawHandler}
+            className="bg-red-500 hover:bg-red-600 w-full text-white p-3 rounded-xl font-medium transition"
+          >
+            Withdraw Money
+          </button>
+        </div>
+
+        {/* Transfer */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition">
+          <div className="mb-5">
+            <h2 className="text-xl font-bold text-slate-900">
+              Transfer
+            </h2>
+
+            <p className="text-sm text-slate-500 mt-1">
+              Send money to another user
+            </p>
+          </div>
+
+          <input
+            type="email"
+            placeholder="Receiver Email"
+            value={receiverEmail}
+            onChange={(e) =>
+              setReceiverEmail(e.target.value)
+            }
+            className="border border-slate-300 w-full p-3 rounded-xl mb-3 outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+          />
+
+          <input
+            type="number"
+            placeholder="Amount"
+            value={transferAmount}
+            onChange={(e) =>
+              setTransferAmount(e.target.value)
+            }
+            className="border border-slate-300 w-full p-3 rounded-xl mb-4 outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+          />
+
+          <button
+            onClick={transferHandler}
+            className="bg-blue-600 hover:bg-blue-700 w-full text-white p-3 rounded-xl font-medium transition"
+          >
+            Transfer Money
+          </button>
+        </div>
       </div>
 
-  <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-2xl shadow-lg p-8 mb-6">
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
 
-  <p className="text-lg">
-    Current Balance
-  </p>
+        <div className="bg-green-500 text-white rounded-2xl p-5 shadow-sm">
+          <p className="text-green-100 text-sm">
+            Total Deposit
+          </p>
 
-  <h1 className="text-5xl font-bold mt-2">
-    ₹{balance}
-  </h1>
+          <h2 className="text-3xl font-bold mt-2">
+            ₹{summary.deposit}
+          </h2>
+        </div>
 
-  <p className="opacity-80 mt-3">
-    Available Balance
-  </p>
+        <div className="bg-red-500 text-white rounded-2xl p-5 shadow-sm">
+          <p className="text-red-100 text-sm">
+            Total Withdraw
+          </p>
 
-</div>
-<div className="grid md:grid-cols-3 gap-6 mb-6">
+          <h2 className="text-3xl font-bold mt-2">
+            ₹{summary.withdraw}
+          </h2>
+        </div>
 
-  {/* Deposit */}
-  <div className="bg-white p-6 rounded-2xl shadow">
-    <h2 className="text-xl font-bold mb-4">Deposit</h2>
+        <div className="bg-blue-500 text-white rounded-2xl p-5 shadow-sm">
+          <p className="text-blue-100 text-sm">
+            Total Transfer
+          </p>
 
-    <input
-      type="number"
-      placeholder="Enter Amount"
-      value={amount}
-      onChange={(e) => setAmount(e.target.value)}
-      className="border w-full p-3 rounded-lg mb-4"
-    />
+          <h2 className="text-3xl font-bold mt-2">
+            ₹{summary.transfer}
+          </h2>
+        </div>
 
-    <button
-      onClick={depositHandler}
-      className="bg-green-500 w-full text-white p-3 rounded-lg"
-    >
-      Deposit
-    </button>
-  </div>
+        <div className="bg-purple-600 text-white rounded-2xl p-5 shadow-sm">
+          <p className="text-purple-100 text-sm">
+            Total Transactions
+          </p>
 
-  {/* Withdraw */}
-  <div className="bg-white p-6 rounded-2xl shadow">
-    <h2 className="text-xl font-bold mb-4">Withdraw</h2>
+          <h2 className="text-3xl font-bold mt-2">
+            {transactions.length}
+          </h2>
+        </div>
+      </div>
 
-    <input
-      type="number"
-      placeholder="Enter Amount"
-      value={withdrawAmount}
-      onChange={(e) => setWithdrawAmount(e.target.value)}
-      className="border w-full p-3 rounded-lg mb-4"
-    />
+      {/* Analytics */}
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 md:p-6 mb-8">
+        <h2 className="text-2xl font-bold text-slate-900 mb-1">
+          Analytics
+        </h2>
 
-    <button
-      onClick={withdrawHandler}
-      className="bg-red-500 w-full text-white p-3 rounded-lg"
-    >
-      Withdraw
-    </button>
-  </div>
-
-  {/* Transfer */}
-  <div className="bg-white p-6 rounded-2xl shadow">
-    <h2 className="text-xl font-bold mb-4">Transfer</h2>
-
-    <input
-      type="email"
-      placeholder="Receiver Email"
-      value={receiverEmail}
-      onChange={(e) => setReceiverEmail(e.target.value)}
-      className="border w-full p-3 rounded-lg mb-4"
-    />
-
-    <input
-      type="number"
-      placeholder="Amount"
-      value={transferAmount}
-      onChange={(e) => setTransferAmount(e.target.value)}
-      className="border w-full p-3 rounded-lg mb-4"
-    />
-
-    <button
-      onClick={transferHandler}
-      className="bg-blue-500 w-full text-white p-3 rounded-lg"
-    >
-      Transfer
-    </button>
-  </div>
-
-</div>
-
-<div className="grid md:grid-cols-4 gap-5 mb-6">
-
-  <div className="bg-green-500 text-white rounded-xl p-5">
-    <h3>Total Deposit</h3>
-    <h1 className="text-3xl font-bold">
-      ₹{summary.deposit}
-    </h1>
-  </div>
-
-  <div className="bg-red-500 text-white rounded-xl p-5">
-    <h3>Total Withdraw</h3>
-    <h1 className="text-3xl font-bold">
-      ₹{summary.withdraw}
-    </h1>
-  </div>
-
-  <div className="bg-blue-500 text-white rounded-xl p-5">
-    <h3>Total Transfer</h3>
-    <h1 className="text-3xl font-bold">
-      ₹{summary.transfer}
-    </h1>
-  </div>
-
-  <div className="bg-purple-600 text-white rounded-xl p-5">
-    <h3>Total Transactions</h3>
-    <h1 className="text-3xl font-bold">
-      {transactions.length}
-    </h1>
-  </div>
-
-</div>
-<Analytics transactions={transactions} />
-
-<div className="my-6">
-  <button
-    onClick={downloadPDF}
-    className="bg-purple-600 text-white px-6 py-3 rounded-lg"
-  >
-    Download Bank Statement
-  </button>
-</div>
-
-<div className="bg-white rounded-2xl shadow p-6 mb-6">
-
-  <h2 className="text-2xl font-bold mb-5">
-    Recent Transactions
-  </h2>
-
-  {transactions.slice(0, 5).map((item) => (
-    <div
-      key={item._id}
-      className="flex justify-between border-b py-3"
-    >
-      <div>
-        <h3 className="capitalize font-semibold">
-          {item.type}
-        </h3>
-
-        <p className="text-gray-500 text-sm">
-          {new Date(item.createdAt).toLocaleString()}
+        <p className="text-slate-500 text-sm mb-5">
+          Overview of your banking activity
         </p>
+
+        <Analytics transactions={transactions} />
       </div>
 
-      <h3 className="font-bold">
-        ₹{item.amount}
-      </h3>
-    </div>
-  ))}
+      {/* PDF Statement */}
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h2 className="text-xl font-bold text-slate-900">
+              Bank Statement
+            </h2>
 
-</div>
+            <p className="text-sm text-slate-500 mt-1">
+              Download your transaction statement as PDF.
+            </p>
+          </div>
 
-<div className="bg-white p-6 rounded-2xl shadow mb-6">
-  <h2 className="text-2xl font-bold mb-4">
-    Transaction History
-  </h2>
+          <button
+            onClick={downloadPDF}
+            className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-medium transition"
+          >
+            Download Statement
+          </button>
+        </div>
+      </div>
 
-  {transactions.length === 0 ? (
-    <p>No Transactions Found</p>
-  ) : (
-    <table className="w-full border border-gray-300">
-      <thead>
-        <tr className="bg-gray-200">
-          <th className="border p-3">Type</th>
-          <th className="border p-3">Amount</th>
-          <th className="border p-3">Date</th>
-        </tr>
-      </thead>
+      {/* Recent Transactions */}
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
 
-      <tbody>
-        {transactions.map((item) => (
-          <tr key={item._id}>
-            <td className="border p-3 capitalize">
-              {item.type}
-            </td>
+        <div className="mb-5">
+          <h2 className="text-2xl font-bold text-slate-900">
+            Recent Transactions
+          </h2>
 
-            <td className="border p-3">
-              ₹{item.amount}
-            </td>
+          <p className="text-sm text-slate-500 mt-1">
+            Your latest banking activity
+          </p>
+        </div>
 
-            <td className="border p-3">
-              {item.createdAt
-                ? new Date(item.createdAt).toLocaleString()
-                : "N/A"}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  )}
-</div>
+        {transactions.length === 0 ? (
+          <div className="text-center py-8">
+            <p className="text-slate-500">
+              No recent transactions.
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {transactions.slice(0, 5).map((item) => (
+              <div
+                key={item._id}
+                className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border border-slate-100 rounded-xl p-4 hover:bg-slate-50 transition"
+              >
+                <div>
+                  <h3 className="capitalize font-semibold text-slate-900">
+                    {item.type}
+                  </h3>
+
+                  <p className="text-slate-500 text-sm mt-1">
+                    {item.createdAt
+                      ? new Date(
+                          item.createdAt
+                        ).toLocaleString()
+                      : "N/A"}
+                  </p>
+                </div>
+
+                <h3 className="font-bold text-slate-900">
+                  ₹{item.amount}
+                </h3>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Full Transaction History */}
+      <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-8">
+
+        <div className="mb-5">
+          <h2 className="text-2xl font-bold text-slate-900">
+            Transaction History
+          </h2>
+
+          <p className="text-sm text-slate-500 mt-1">
+            Complete transaction records
+          </p>
+        </div>
+
+        {transactions.length === 0 ? (
+          <div className="text-center py-8">
+            <p className="text-slate-500">
+              No Transactions Found
+            </p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[600px] border border-slate-200 rounded-xl overflow-hidden">
+              <thead>
+                <tr className="bg-slate-100">
+                  <th className="border border-slate-200 p-3 text-left">
+                    Type
+                  </th>
+
+                  <th className="border border-slate-200 p-3 text-left">
+                    Amount
+                  </th>
+
+                  <th className="border border-slate-200 p-3 text-left">
+                    Date
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {transactions.map((item) => (
+                  <tr
+                    key={item._id}
+                    className="hover:bg-slate-50 transition"
+                  >
+                    <td className="border border-slate-200 p-3 capitalize font-medium">
+                      {item.type}
+                    </td>
+
+                    <td className="border border-slate-200 p-3 font-semibold">
+                      ₹{item.amount}
+                    </td>
+
+                    <td className="border border-slate-200 p-3 text-slate-600">
+                      {item.createdAt
+                        ? new Date(
+                            item.createdAt
+                          ).toLocaleString()
+                        : "N/A"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
     </div>
   </div>
-);
+ );
 }
-
 export default Dashboard;
